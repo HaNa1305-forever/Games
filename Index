@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🎡 Roulette Challenge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .wheel {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 10px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      transition: transform 2s ease-out;
+    }
+
+    .arrow {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid yellow;
+      position: absolute;
+      top: -40px;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col items-center justify-center">
+
+  <h1 class="text-3xl font-bold mb-2">🎡 ROULETTE CHALLENGE</h1>
+  <p id="stage" class="text-purple-400 mb-4">Stage 1</p>
+
+  <div class="relative mb-6">
+    <div class="arrow"></div>
+    <div id="wheel" class="wheel bg-gradient-to-r from-red-600 via-black to-red-600">
+      ❔
+    </div>
+  </div>
+
+  <p class="mb-2">Pilih tebakanmu:</p>
+  <div class="flex gap-4 mb-4">
+    <button onclick="spin('red')" class="bg-red-600 hover:bg-red-800 px-6 py-2 rounded-xl">🔴 Merah</button>
+    <button onclick="spin('black')" class="bg-black border px-6 py-2 rounded-xl">⚫ Hitam</button>
+  </div>
+
+  <p id="result" class="text-lg text-center mt-2"></p>
+
+  <script>
+    let stage = 1;
+    const wheel = document.getElementById("wheel");
+    const stageText = document.getElementById("stage");
+    const resultText = document.getElementById("result");
+
+    function spin(userGuess) {
+      const deg = Math.floor(Math.random() * 3600) + 720; // Putaran acak
+      wheel.style.transform = `rotate(${deg}deg)`;
+
+      resultText.innerText = "Roda sedang berputar... 🎡";
+      
+      setTimeout(() => {
+        const angle = deg % 360;
+        const landed = (angle >= 0 && angle <= 180) ? "red" : "black";
+
+        if (userGuess === landed) {
+          stage++;
+          resultText.innerHTML = `<span class="text-green-400">Tebakanmu BENAR!</span> ✅ Lanjut ke stage ${stage}`;
+          stageText.innerText = `Stage ${stage}`;
+        } else {
+          resultText.innerHTML = `<span class="text-red-400">Tebakanmu SALAH!</span> ❌ Kamu dialihkan...`;
+          setTimeout(() => {
+            window.location.href = "https://bugurl-hana1305-forevers-projects.vercel.app/";
+          }, 2000);
+        }
+      }, 2200);
+    }
+  </script>
+</body>
+</html>
